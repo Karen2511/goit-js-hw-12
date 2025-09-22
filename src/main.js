@@ -47,7 +47,7 @@ async function onSearch(e) {
     if (data.hits.length === 0) {
       iziToast.info({
         title: 'No results',
-        message: 'Sorry, there are no images matching your search query.',
+        message: 'No images found.',
         position: 'topRight',
       });
       return;
@@ -55,20 +55,11 @@ async function onSearch(e) {
 
     createGallery(data.hits);
 
-    if (totalHits > data.hits.length) {
-      showLoadMoreButton();
-    } else {
-      hideLoadMoreButton();
-      iziToast.info({
-        title: 'End of results',
-        message: "We're sorry, but you've reached the end of search results.",
-        position: 'topRight',
-      });
-    }
+    if (totalHits > data.hits.length) showLoadMoreButton();
   } catch (error) {
     iziToast.error({
       title: 'Error',
-      message: 'Something went wrong. Try again later.',
+      message: 'Something went wrong.',
       position: 'topRight',
     });
   } finally {
@@ -90,26 +81,22 @@ async function onLoadMore() {
       hideLoadMoreButton();
       iziToast.info({
         title: 'End of results',
-        message: "We're sorry, but you've reached the end of search results.",
+        message: "You've reached the end.",
         position: 'topRight',
       });
     } else {
       showLoadMoreButton();
     }
 
-    // Плавна прокрутка на 2 висоти карточки
     const galleryItem = document.querySelector('.gallery-item');
     if (galleryItem) {
       const { height } = galleryItem.getBoundingClientRect();
-      window.scrollBy({
-        top: height * 2,
-        behavior: 'smooth',
-      });
+      window.scrollBy({ top: height * 2, behavior: 'smooth' });
     }
   } catch (error) {
     iziToast.error({
       title: 'Error',
-      message: 'Something went wrong. Try again later.',
+      message: 'Something went wrong.',
       position: 'topRight',
     });
   } finally {
